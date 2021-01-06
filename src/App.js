@@ -1,10 +1,25 @@
-import logo from './assets/images/logo.svg';
+import React, { Component } from 'react';
 import './assets/css/App.css';
+import Menu from './components/menu/menu';
+import {Route, Switch} from 'react-router-dom';
+import verCentrosLogisticos from './components/centroslogisticos/verCentrosLogisticos';
+import verOficina from './components/oficinas/verOficina';
 
-// Importar componente de prueba
-import MiComponente from './components/prueba/MiComponente';
-import MiComponenteDestructuring from './components/prueba/MiComponenteDestructuring';
+class App extends Component {
+  render(){
+    return(
+      <div className="App">
+        <Menu/>
+        <Switch>
+          <Route path='/oficinas/' component={verOficina}/>
+          <Route path="/centroslogisticos" component={verCentrosLogisticos}/>
+        </Switch>
+      </div>
+    );
+  }
+}
 
+/* -- CODIGO DE EJEMPLO --
 function App() {
   return (
     <div className="App">
@@ -30,6 +45,6 @@ function App() {
       </header>
     </div>
   );
-}
+}*/
 
 export default App;
