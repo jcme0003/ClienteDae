@@ -1,6 +1,10 @@
 import logo from './assets/images/logo.svg';
 import './assets/css/App.css';
 
+// Importar componente de prueba
+import MiComponente from './components/prueba/MiComponente';
+import MiComponenteDestructuring from './components/prueba/MiComponenteDestructuring';
+
 function App() {
   return (
     <div className="App">
@@ -9,6 +13,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -17,6 +22,11 @@ function App() {
         >
           Learn React
         </a>
+
+        <section className="componentes">
+          <MiComponente/>
+          <MiComponenteDestructuring/>
+        </section>
       </header>
     </div>
   );
