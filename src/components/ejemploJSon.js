@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 // Creacion basica de un componente de prueba
-class verCentrosLogisticos extends Component {
+class ejemploJSon extends Component {
 
     render(){
         let receta = {
@@ -26,4 +26,4 @@ class verCentrosLogisticos extends Component {
 
 }
 
-export default verCentrosLogisticos;
+export default ejemploJSon;

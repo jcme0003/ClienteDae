@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
 import './assets/css/App.css';
-import Menu from './components/menu/menu';
+import React, { Component } from 'react';
 import {Route, Switch} from 'react-router-dom';
-import verCentrosLogisticos from './components/centroslogisticos/verCentrosLogisticos';
-import verOficina from './components/oficinas/verOficina';
+import Menu from './components/menu/Menu';
+import Home from './components/Home';
+import verCentroLogistico from './components/verCentroLogistico';
+import verOficina from './components/verOficina';
+import verEnvio from './components/verEnvio';
 
 class App extends Component {
   render(){
@@ -11,8 +13,10 @@ class App extends Component {
       <div className="App">
         <Menu/>
         <Switch>
-          <Route path='/oficinas/' component={verOficina}/>
-          <Route path="/centroslogisticos" component={verCentrosLogisticos}/>
+          <Route exact path="/" component={Home}/>
+          <Route path="/envios/:localizador" component={verEnvio}/>
+          <Route path="/oficinas/:provincia" component={verOficina}/>
+          <Route path="/centroslogisticos/:id" component={verCentroLogistico}/>
         </Switch>
       </div>
     );
