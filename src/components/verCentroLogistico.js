@@ -13,14 +13,16 @@ class verCentroLogistico extends Component {
             nombre: "",
             localizacion: ""
         };
+        this.buscarCentroLogistico = this.buscarCentroLogistico.bind(this);
     }
 
-    componentDidMount(){
-        fetch(apiUrl + this.props.match.params.id)
+    buscarCentroLogistico(){
+        fetch(apiUrl + document.getElementById("input_centro").value)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
+                        error: null,
                         isLoaded: true,
                         nombre: result.nombre,
                         localizacion: result.localizacion
@@ -40,16 +42,26 @@ class verCentroLogistico extends Component {
         
         if(error){
             return(
-                <div>Error: {error.message}</div>
+                <div>
+                    <h6>El centro logistico indicado no existe</h6>
+                    <input type="text" id="input_centro" name="centro" />
+                    <button onClick={this.buscarCentroLogistico}>Buscar</button>
+                </div>
             );
         } else if(!isLoaded){
             return(
-                <div>Cargando...</div>
+                <div>
+                    <input type="text" id="input_centro" name="centro" />
+                    <button onClick={this.buscarCentroLogistico}>Buscar</button>
+                </div>
             );
         } else {
             return(
                 <div>
-                    <h1>PRUEBA</h1>
+                    <div>
+                        <input type="text" id="input_centro" name="centro" />
+                        <button onClick={this.buscarCentroLogistico}>Buscar</button>
+                    </div>
                     <table>
                         <thead>
                             <tr>

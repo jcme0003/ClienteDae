@@ -9,11 +9,11 @@ export const MenuDatos = [
     },
     {
         titulo: "Oficina",
-        path: "/oficinas/madrid"
+        path: "/oficinas"
     },
     {
         titulo: "Centros logisticos",
-        path: "/centroslogisticos/1"
+        path: "/centroslogisticos"
     }
 ];
 

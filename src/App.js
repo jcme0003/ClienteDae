@@ -14,9 +14,9 @@ class App extends Component {
         <Menu/>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/envios/:localizador" component={verEnvio}/>
-          <Route path="/oficinas/:provincia" component={verOficina}/>
-          <Route path="/centroslogisticos/:id" component={verCentroLogistico}/>
+          <Route path="/envios/" component={verEnvio}/>
+          <Route path="/oficinas/" component={verOficina}/>
+          <Route path="/centroslogisticos/" component={verCentroLogistico}/>
         </Switch>
       </div>
     );

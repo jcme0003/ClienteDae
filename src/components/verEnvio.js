@@ -18,14 +18,17 @@ class verCentroLogistico extends Component {
             remitente: "",
             destinatario: ""
         };
+        this.buscarEnvio = this.buscarEnvio.bind(this);
+        this.verRuta = this.verRuta.bind(this);
     }
 
-    componentDidMount(){
-        fetch(apiUrl + this.props.match.params.localizador)
+    buscarEnvio(){
+        fetch(apiUrl + document.getElementById("input_envio").value)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
+                        error: null,
                         isLoaded: true,
                         localizador: result.localizador,
                         estado: result.estado,
@@ -45,16 +48,27 @@ class verCentroLogistico extends Component {
             )
     }
 
+    verRuta(){
+        console.log("RUTA");
+    }
+
     render(){
         const {error, isLoaded, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario} = this.state;
         
         if(error){
             return(
-                <div>Error: {error.message}</div>
+                <div>
+                    <h6>No existe ningun envio con el codigo indicado</h6>
+                    <input type="text" id="input_envio" name="envio" />
+                    <button onClick={this.buscarEnvio}>Buscar</button>
+                </div>
             );
         } else if(!isLoaded){
             return(
-                <div>Cargando...</div>
+                <div>
+                    <input type="text" id="input_envio" name="envio" />
+                    <button onClick={this.buscarEnvio}>Buscar</button>
+                </div>
             );
         } else {
             return(
@@ -70,6 +84,7 @@ class verCentroLogistico extends Component {
                                 <th>Importe</th>
                                 <th>DNI remitente</th>
                                 <th>DNI destinatario</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,6 +96,7 @@ class verCentroLogistico extends Component {
                                 <td>{importe}</td>
                                 <td>{remitente}</td>
                                 <td>{destinatario}</td>
+                                <td><button onClick={this.verRuta}>Ver ruta</button></td>
                             </tr>
                         </tbody>
                     </table>

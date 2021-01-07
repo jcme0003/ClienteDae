@@ -10,18 +10,21 @@ class verOficina extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            nombreProvincia: ""
+            provincia: ""
         };
+        this.buscarOficina = this.buscarOficina.bind(this);
     }
 
-    componentDidMount(){
-        fetch(apiUrl + this.props.match.params.provincia)
+    buscarOficina() {
+        let oficina = document.getElementById("input_oficina").value;
+        fetch(apiUrl + oficina)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
-                        isLoaded: true,
-                        nombreProvincia: result.nombreProvincia
+                        error: null,
+                        provincia: result.nombreProvincia,
+                        isLoaded: true
                     });
                 },
                 (error) => {
@@ -34,20 +37,30 @@ class verOficina extends Component {
     }
 
     render(){
-        const {error, isLoaded, nombreProvincia} = this.state;
-        
-        if(error){
+        const {error, isLoaded, provincia} = this.state;
+
+        if(error) {
             return(
-                <div>Error: {error.message}</div>
+                <div>
+                    <h6>No existe la provincia indicada</h6>
+                    <input type="text" id="input_oficina" name="oficina" />
+                    <button onClick={this.buscarOficina}>Buscar</button>
+                </div>
             );
-        } else if(!isLoaded){
+        } else if(!isLoaded) {
             return(
-                <div>Cargando...</div>
+                <div>
+                    <input type="text" id="input_oficina" name="oficina" />
+                    <button onClick={this.buscarOficina}>Buscar</button>
+                </div>
             );
         } else {
             return(
                 <div>
-                    <h1>PRUEBA</h1>
+                    <div>
+                        <input type="text" id="input_oficina" name="oficina" />
+                        <button onClick={this.buscarOficina}>Buscar</button>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -56,7 +69,7 @@ class verOficina extends Component {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{nombreProvincia}</td>
+                                <td>{provincia}</td>
                             </tr>
                         </tbody>
                     </table>
