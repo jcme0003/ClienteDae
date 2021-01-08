@@ -5,7 +5,7 @@ import Menu from './components/menu/Menu';
 import Home from './components/Home';
 import verCentroLogistico from './components/verCentroLogistico';
 import verOficina from './components/verOficina';
-import verEnvio from './components/verEnvio';
+import Envios from './components/Envios';
 
 class App extends Component {
   render(){
@@ -14,7 +14,7 @@ class App extends Component {
         <Menu/>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/envios/" component={verEnvio}/>
+          <Route path="/envios/" component={Envios}/>
           <Route path="/oficinas/" component={verOficina}/>
           <Route path="/centroslogisticos/" component={verCentroLogistico}/>
         </Switch>
