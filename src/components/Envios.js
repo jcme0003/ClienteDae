@@ -22,8 +22,10 @@ class Envios extends Component {
         this.crearEnvio = this.crearEnvio.bind(this);
         this.buscarEnvio = this.buscarEnvio.bind(this);
         this.verRuta = this.verRuta.bind(this);
-        this.notificarLlegada = this.notificarLlegada.bind(this);
-        this.notificarSalida = this.notificarSalida.bind(this);
+        this.notificarLlegadaCentro = this.notificarLlegadaCentro.bind(this);
+        this.notificarLlegadaOficina = this.notificarLlegadaOficina.bind(this);
+        this.notificarSalidaCentro = this.notificarSalidaCentro.bind(this);
+        this.notificarSalidaOficina = this.notificarSalidaOficina.bind(this);
     }
 
     crearEnvio(){
@@ -124,14 +126,65 @@ class Envios extends Component {
             )
     }
 
-    notificarLlegada(){
+    notificarLlegadaCentro(id){
+        fetch(apiUrl + this.state.localizador + "/notificarcentrologistico/" + id, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                'llegada'
+            )
+        });
 
+        this.verRuta();
     }
 
-    notificarSalida(){
-        
+    notificarLlegadaOficina(id){
+        fetch(apiUrl + this.state.localizador + "/notificaroficina/" + id, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                'llegada'
+            )
+        });
+
+        this.verRuta();
+    }
+
+    notificarSalidaCentro(id){
+        fetch(apiUrl + this.state.localizador + "/notificarcentrologistico/" + id, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                'salida'
+            )
+        });
+
+        this.verRuta();
     }
     
+    notificarSalidaOficina(id){
+        fetch(apiUrl + this.state.localizador + "/notificaroficina/" + id, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                'salida'
+            )
+        });
+
+        this.verRuta();
+    }
 
     render(){
         const {error, isLoaded, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
@@ -235,14 +288,25 @@ class Envios extends Component {
                                     <td></td>
                                 </tr>
                                 {ruta.ruta.map((ppc, i) => {
-                                    return(
-                                        <tr key={i}>
-                                            <td>{ppc.fechaLlegada}</td>
-                                            <td><input type="button" value="Notificar llegada" onClick={this.notificarLlegada} /></td>
-                                            <td>{ppc.fechaSalida}</td>
-                                            <td><input type="button" value="Notificar salida" onClick={this.notificarSalida} /></td>
-                                        </tr>
-                                    );
+                                    if(ppc.tipo === "OFICINA"){
+                                        return(
+                                            <tr key={i}>
+                                                <td>{ppc.fechaLlegada}</td>
+                                                <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaOficina(ppc.id)} /></td>
+                                                <td>{ppc.fechaSalida}</td>
+                                                <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaOficina(ppc.id)} /></td>
+                                            </tr>
+                                        );
+                                    } else {
+                                        return(
+                                            <tr key={i}>
+                                                <td>{ppc.fechaLlegada}</td>
+                                                <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaCentro(ppc.id)} /></td>
+                                                <td>{ppc.fechaSalida}</td>
+                                                <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaCentro(ppc.id)} /></td>
+                                            </tr>
+                                        );
+                                    }
                                 })}
                             </tfoot>
                         </table>
