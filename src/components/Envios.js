@@ -188,209 +188,160 @@ class Envios extends Component {
 
     render(){
         const {error, isLoaded, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
+        let errorCodigoEnvio = <h6>No existe ningun envio con el codigo indicado</h6>;
+        let buscarEnvio =
+        <React.Fragment>
+            <input type="text" id="input_envio" name="envio" />
+            <button onClick={this.buscarEnvio}>Buscar</button>
+        </React.Fragment>;
+        let textCrearEnvio = <p>Crear nuevo envío</p>;
+        let formCrearEnvio =
+            <form>
+                <p>Paquetes</p>
+                <label>Peso: </label>
+                <input type="text" id="fpeso" name="fpeso" />
+                <label>Anchura: </label>
+                <input type="text" id="fanchura" name="fanchura" />
+                <label>Altura: </label>
+                <input type="text" id="faltura" name="faltura" />
+                <label>Profundidad: </label>
+                <input type="text" id="fprofundidad" name="fprofundidad" />
+                <p>Datos remitente</p>
+                <label>DNI: </label>
+                <input type="text" id="fdnir" name="fdnir" />
+                <label>Nombre: </label>
+                <input type="text" id="fnombrer" name="fnombrer" />
+                <label>Apellidos: </label>
+                <input type="text" id="fapellidosr" name="fapellidosr" />
+                <label>Dirección: </label>
+                <input type="text" id="fdireccionr" name="fdireccionr" />
+                <label>Provincia: </label>
+                <input type="text" id="fprovinciar" name="fprovinciar" />
+                <label>Teléfono: </label>
+                <input type="text" id="ftelefonor" name="ftelefonor" />
+                <label>Email: </label>
+                <input type="email" id="femailr" name="femailr" />
+                <p>Datos destinatario</p>
+                <label>DNI: </label>
+                <input type="text" id="fdnid" name="fdnid" />
+                <label>Nombre: </label>
+                <input type="text" id="fnombred" name="fnombred" />
+                <label>Apellidos: </label>
+                <input type="text" id="fapellidosd" name="fapellidosd" />
+                <label>Dirección: </label>
+                <input type="text" id="fdirecciond" name="fdirecciond" />
+                <label>Provincia: </label>
+                <input type="text" id="fprovinciad" name="fprovinciad" />
+                <label>Teléfono: </label>
+                <input type="text" id="ftelefonod" name="ftelefonod" />
+                <label>Email: </label>
+                <input type="email" id="femaild" name="femaild" />
+
+                <input type="button" value="Crear envio" onClick={this.crearEnvio} />
+            </form>;
+        let datosEnvio =
+            <table>
+                <thead>
+                    <tr>
+                        <th>Localizador</th>
+                        <th>Estado</th>
+                        <th>Fecha de llegada</th>
+                        <th>Hora de llegada</th>
+                        <th>Importe</th>
+                        <th>DNI remitente</th>
+                        <th>DNI destinatario</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{localizador}</td>
+                        <td>{estado}</td>
+                        <td>{fechaLlegada}</td>
+                        <td>{horaLlegada}</td>
+                        <td>{importe}</td>
+                        <td>{remitente}</td>
+                        <td>{destinatario}</td>
+                        <td><button onClick={this.verRuta}>Ver ruta</button></td>
+                    </tr>
+                </tbody>
+            </table>;
+        
 
         if(error){
             return(
-                <div>
-                    <h6>No existe ningun envio con el codigo indicado</h6>
-                    <input type="text" id="input_envio" name="envio" />
-                    <button onClick={this.buscarEnvio}>Buscar</button>
-                </div>
+                <React.Fragment>
+                    {errorCodigoEnvio}
+                    {buscarEnvio}
+                </React.Fragment>
             );
-        } else if(!isLoaded){
+        } else if(!isLoaded) {
             return(
-                <div>
-                    <input type="text" id="input_envio" name="envio" />
-                    <button onClick={this.buscarEnvio}>Buscar</button>
-                    <p>Crear nuevo envío</p>
-                    <form>
-                        <p>Paquetes</p>
-                        <label>Peso: </label>
-                        <input type="text" id="fpeso" name="fpeso" />
-                        <label>Anchura: </label>
-                        <input type="text" id="fanchura" name="fanchura" />
-                        <label>Altura: </label>
-                        <input type="text" id="faltura" name="faltura" />
-                        <label>Profundidad: </label>
-                        <input type="text" id="fprofundidad" name="fprofundidad" />
-                        <p>Datos remitente</p>
-                        <label>DNI: </label>
-                        <input type="text" id="fdnir" name="fdnir" />
-                        <label>Nombre: </label>
-                        <input type="text" id="fnombrer" name="fnombrer" />
-                        <label>Apellidos: </label>
-                        <input type="text" id="fapellidosr" name="fapellidosr" />
-                        <label>Dirección: </label>
-                        <input type="text" id="fdireccionr" name="fdireccionr" />
-                        <label>Provincia: </label>
-                        <input type="text" id="fprovinciar" name="fprovinciar" />
-                        <label>Teléfono: </label>
-                        <input type="text" id="ftelefonor" name="ftelefonor" />
-                        <label>Email: </label>
-                        <input type="email" id="femailr" name="femailr" />
-                        <p>Datos destinatario</p>
-                        <label>DNI: </label>
-                        <input type="text" id="fdnid" name="fdnid" />
-                        <label>Nombre: </label>
-                        <input type="text" id="fnombred" name="fnombred" />
-                        <label>Apellidos: </label>
-                        <input type="text" id="fapellidosd" name="fapellidosd" />
-                        <label>Dirección: </label>
-                        <input type="text" id="fdirecciond" name="fdirecciond" />
-                        <label>Provincia: </label>
-                        <input type="text" id="fprovinciad" name="fprovinciad" />
-                        <label>Teléfono: </label>
-                        <input type="text" id="ftelefonod" name="ftelefonod" />
-                        <label>Email: </label>
-                        <input type="email" id="femaild" name="femaild" />
-
-                        <input type="button" value="Crear envio" onClick={this.crearEnvio} />
-                    </form>
-                </div>
+                <React.Fragment>
+                    {buscarEnvio}
+                    {textCrearEnvio}
+                    {formCrearEnvio}
+                </React.Fragment>
+            );
+        } else if(!ruta){
+            return(
+                <React.Fragment>
+                    {buscarEnvio}
+                    {datosEnvio}
+                    {textCrearEnvio}
+                    {formCrearEnvio}
+                </React.Fragment>
             );
         } else if(ruta){
             return(
-                <div>
-                    <h1>Envio: {localizador}</h1>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Localizador</th>
-                                    <th>Estado</th>
-                                    <th>Fecha de llegada</th>
-                                    <th>Hora de llegada</th>
-                                    <th>Importe</th>
-                                    <th>DNI remitente</th>
-                                    <th>DNI destinatario</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{localizador}</td>
-                                    <td>{estado}</td>
-                                    <td>{fechaLlegada}</td>
-                                    <td>{horaLlegada}</td>
-                                    <td>{importe}</td>
-                                    <td>{remitente}</td>
-                                    <td>{destinatario}</td>
-                                    <td><button onClick={this.verRuta}>Ver ruta</button></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>Ruta</td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha llegada</td>
-                                    <td></td>
-                                    <td>Fecha salida</td>
-                                    <td></td>
-                                </tr>
-                                {ruta.ruta.map((ppc, i) => {
-                                    if(ppc.tipo === "OFICINA"){
-                                        return(
-                                            <tr key={i}>
-                                                <td>{ppc.fechaLlegada}</td>
-                                                <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaOficina(ppc.id)} /></td>
-                                                <td>{ppc.fechaSalida}</td>
-                                                <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaOficina(ppc.id)} /></td>
-                                            </tr>
-                                        );
-                                    } else {
-                                        return(
-                                            <tr key={i}>
-                                                <td>{ppc.fechaLlegada}</td>
-                                                <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaCentro(ppc.id)} /></td>
-                                                <td>{ppc.fechaSalida}</td>
-                                                <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaCentro(ppc.id)} /></td>
-                                            </tr>
-                                        );
-                                    }
-                                })}
-                            </tfoot>
-                        </table>
-                </div>
+                <React.Fragment>
+                {buscarEnvio}
+                {datosEnvio}
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Ruta</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha llegada</td>
+                            <td></td>
+                            <td>Fecha salida</td>
+                            <td></td>
+                        </tr>
+                        {ruta.ruta.map((ppc, i) => {
+                            if(ppc.tipo === "OFICINA"){
+                                return(
+                                    <tr key={i}>
+                                        <td>{ppc.fechaLlegada}</td>
+                                        <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaOficina(ppc.id)} /></td>
+                                        <td>{ppc.fechaSalida}</td>
+                                        <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaOficina(ppc.id)} /></td>
+                                    </tr>
+                                );
+                            } else {
+                                return(
+                                    <tr key={i}>
+                                        <td>{ppc.fechaLlegada}</td>
+                                        <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaCentro(ppc.id)} /></td>
+                                        <td>{ppc.fechaSalida}</td>
+                                        <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaCentro(ppc.id)} /></td>
+                                    </tr>
+                                );
+                            }
+                        })}
+                    </tbody>
+                </table>
+                {textCrearEnvio}
+                {formCrearEnvio}
+                </React.Fragment>
             );
         } else {
             return(
-                <div>
-                    <h1>Envio: {localizador}</h1>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Localizador</th>
-                                <th>Estado</th>
-                                <th>Fecha de llegada</th>
-                                <th>Hora de llegada</th>
-                                <th>Importe</th>
-                                <th>DNI remitente</th>
-                                <th>DNI destinatario</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{localizador}</td>
-                                <td>{estado}</td>
-                                <td>{fechaLlegada}</td>
-                                <td>{horaLlegada}</td>
-                                <td>{importe}</td>
-                                <td>{remitente}</td>
-                                <td>{destinatario}</td>
-                                <td><button onClick={this.verRuta}>Ver ruta</button></td>
-                            </tr>
-                        </tbody>
-                        <tfoot id="datosRuta">
-
-                        </tfoot>
-                    </table>
-
-                    <p>Crear nuevo envío</p>
-                    <form>
-                        <p>Paquetes</p>
-                        <label>Peso: </label>
-                        <input type="text" id="fpeso" name="fpeso" />
-                        <label>Anchura: </label>
-                        <input type="text" id="fanchura" name="fanchura" />
-                        <label>Altura: </label>
-                        <input type="text" id="faltura" name="faltura" />
-                        <label>Profundidad: </label>
-                        <input type="text" id="fprofundidad" name="fprofundidad" />
-                        <p>Datos remitente</p>
-                        <label>DNI: </label>
-                        <input type="text" id="fdnir" name="fdnir" />
-                        <label>Nombre: </label>
-                        <input type="text" id="fnombrer" name="fnombrer" />
-                        <label>Apellidos: </label>
-                        <input type="text" id="fapellidosr" name="fapellidosr" />
-                        <label>Dirección: </label>
-                        <input type="text" id="fdireccionr" name="fdireccionr" />
-                        <label>Provincia: </label>
-                        <input type="text" id="fprovinciar" name="fprovinciar" />
-                        <label>Teléfono: </label>
-                        <input type="text" id="ftelefonor" name="ftelefonor" />
-                        <label>Email: </label>
-                        <input type="email" id="femailr" name="femailr" />
-                        <p>Datos destinatario</p>
-                        <label>DNI: </label>
-                        <input type="text" id="fdnid" name="fdnid" />
-                        <label>Nombre: </label>
-                        <input type="text" id="fnombred" name="fnombred" />
-                        <label>Apellidos: </label>
-                        <input type="text" id="fapellidosd" name="fapellidosd" />
-                        <label>Dirección: </label>
-                        <input type="text" id="fdirecciond" name="fdirecciond" />
-                        <label>Provincia: </label>
-                        <input type="text" id="fprovinciad" name="fprovinciad" />
-                        <label>Teléfono: </label>
-                        <input type="text" id="ftelefonod" name="ftelefonod" />
-                        <label>Email: </label>
-                        <input type="email" id="femaild" name="femaild" />
-
-                        <input type="button" value="Crear envio" onClick={this.crearEnvio} />
-                    </form>
-                </div>
+                <React.Fragment>
+                {buscarEnvio}
+                {textCrearEnvio}
+                {formCrearEnvio}
+                </React.Fragment>
             );
         }
     }
