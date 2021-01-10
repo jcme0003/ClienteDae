@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
+import base64 from 'react-native-base64';
 
 const apiUrl = "http://localhost:8080/ujapack/puntoscontrol/oficinas/";
+var usuario = localStorage.getItem('usuario');
+var contrasena = localStorage.getItem('contrasena');
 
 // Creacion basica de un componente para consultar datos de una oficina en concreto
 class verOficina extends Component {
@@ -10,14 +13,20 @@ class verOficina extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            provincia: ""
+            provincia: "",
+            usuario: usuario
         };
         this.buscarOficina = this.buscarOficina.bind(this);
     }
 
     buscarOficina() {
         let oficina = document.getElementById("input_oficina").value;
-        fetch(apiUrl + oficina)
+        let headers = new Headers();
+        headers.append("Authorization", "Basic " + base64.encode(usuario + ":" + contrasena));
+
+        fetch(apiUrl + oficina, {
+            headers: headers
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -37,7 +46,8 @@ class verOficina extends Component {
     }
 
     render(){
-        const {error, isLoaded, provincia} = this.state;
+        const {error, isLoaded, provincia, usuario} = this.state;
+        let accesoDenegado = <p className="p-3 mb-2 bg-danger text-white text-center">ACCESO DENEGADO</p>;
         let errorCodigoOficina = <p className="p-3 mb-2 bg-danger text-white">No existe oficina en la provincia indicada</p>;
         let buscarOficina = 
         <div className="mt-3 text-center">
@@ -50,6 +60,12 @@ class verOficina extends Component {
                 <div className="container">
                     {errorCodigoOficina}
                     {buscarOficina}
+                </div>
+            );
+        } else if(!usuario) {
+            return(
+                <div className="container">
+                    {accesoDenegado}
                 </div>
             );
         } else if(!isLoaded) {

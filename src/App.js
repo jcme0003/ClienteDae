@@ -6,6 +6,8 @@ import Home from './components/Home';
 import verCentroLogistico from './components/verCentroLogistico';
 import verOficina from './components/verOficina';
 import Envios from './components/Envios';
+import Login from './components/login/Login';
+import Logout from './components/login/Logout';
 
 class App extends Component {
   render(){
@@ -17,6 +19,8 @@ class App extends Component {
           <Route path="/envios/" component={Envios}/>
           <Route path="/oficinas/" component={verOficina}/>
           <Route path="/centroslogisticos/" component={verCentroLogistico}/>
+          <Route path="/login/" component={Login}/>
+          <Route path="/logout/" component={Logout}/>
         </Switch>
       </div>
     );

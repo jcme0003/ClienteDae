@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import base64 from 'react-native-base64';
 
 const apiUrl = "http://localhost:8080/ujapack/puntoscontrol/centroslogisticos/";
+var usuario = localStorage.getItem('usuario');
+var contrasena = localStorage.getItem('contrasena');
 
-// Creacion basica de un componente para consultar datos de una oficina en concreto
+// Creacion basica de un componente para consultar datos de un centro logistico en concreto
 class verCentroLogistico extends Component {
     constructor(props){
         super(props);
@@ -11,13 +14,19 @@ class verCentroLogistico extends Component {
             error: null,
             isLoaded: false,
             nombre: "",
-            localizacion: ""
+            localizacion: "",
+            usuario: usuario
         };
         this.buscarCentroLogistico = this.buscarCentroLogistico.bind(this);
     }
 
     buscarCentroLogistico(){
-        fetch(apiUrl + document.getElementById("input_centro").value)
+        let headers = new Headers();
+        headers.append("Authorization", "Basic " + base64.encode(usuario + ":" + contrasena));
+
+        fetch(apiUrl + document.getElementById("input_centro").value, {
+            headers: headers
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -38,7 +47,8 @@ class verCentroLogistico extends Component {
     }
 
     render(){
-        const {error, isLoaded, nombre, localizacion} = this.state;
+        const {error, isLoaded, nombre, localizacion, usuario} = this.state;
+        let accesoDenegado = <p className="p-3 mb-2 bg-danger text-white text-center">ACCESO DENEGADO</p>;
         let errorCodigoCentro = <p className="p-3 mb-2 bg-danger text-white">No existe el centro logístico indicado</p>;
         let buscarCentro = 
         <div className="mt-3 text-center">
@@ -51,6 +61,12 @@ class verCentroLogistico extends Component {
                 <div className="container">
                     {errorCodigoCentro}
                     {buscarCentro}
+                </div>
+            );
+        } else if(!usuario){
+            return(
+                <div className="container">
+                    {accesoDenegado}
                 </div>
             );
         } else if(!isLoaded){

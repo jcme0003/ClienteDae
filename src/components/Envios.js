@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
+import base64 from 'react-native-base64';
 
 const apiUrl = "http://localhost:8080/ujapack/envios/";
+var usuario = localStorage.getItem('usuario');
+var contrasena = localStorage.getItem('contrasena');
+var headers = new Headers();
+headers.append("Authorization", "Basic " + base64.encode(usuario + ":" + contrasena));
 
-// Creacion basica de un componente para consultar datos de una oficina en concreto
+// Creacion basica de un componente para consultar y crear envios
 class Envios extends Component {
     constructor(props){
         super(props);
@@ -18,7 +23,8 @@ class Envios extends Component {
             horaLlegada: "",
             importe: "",
             remitente: "",
-            destinatario: ""
+            destinatario: "",
+            usuario: usuario
         };
         this.crearEnvio = this.crearEnvio.bind(this);
         this.buscarEnvio = this.buscarEnvio.bind(this);
@@ -57,19 +63,14 @@ class Envios extends Component {
             email: document.getElementById("femaild").value
         }
 
-        console.log(JSON.stringify({
-            paquetes: [
-                paquete
-            ],
-            remitente: remitente,
-            destinatario: destinatario
-        }));
+        
 
         fetch(apiUrl, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
             },
             body: JSON.stringify({
                 paquetes: [
@@ -106,7 +107,9 @@ class Envios extends Component {
     }
 
     buscarEnvio(){
-        fetch(apiUrl + document.getElementById("input_envio").value)
+        fetch(apiUrl + document.getElementById("input_envio").value, {
+            headers: headers
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -134,7 +137,9 @@ class Envios extends Component {
     }
 
     verRuta(){
-        fetch(apiUrl + this.state.localizador + "/ruta")
+        fetch(apiUrl + this.state.localizador + "/ruta", {
+            headers: headers
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -158,7 +163,8 @@ class Envios extends Component {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
             },
             body: JSON.stringify(
                 'llegada'
@@ -173,7 +179,8 @@ class Envios extends Component {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
             },
             body: JSON.stringify(
                 'llegada'
@@ -188,7 +195,8 @@ class Envios extends Component {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
             },
             body: JSON.stringify(
                 'salida'
@@ -203,7 +211,8 @@ class Envios extends Component {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
             },
             body: JSON.stringify(
                 'salida'
@@ -285,6 +294,31 @@ class Envios extends Component {
                         <th scope="col">Importe</th>
                         <th scope="col">DNI remitente</th>
                         <th scope="col">DNI destinatario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{localizador}</td>
+                        <td>{estado}</td>
+                        <td>{fechaLlegada}</td>
+                        <td>{horaLlegada}</td>
+                        <td>{importe} €</td>
+                        <td>{remitente}</td>
+                        <td>{destinatario}</td>
+                    </tr>
+                </tbody>
+            </table>;
+        let datosEnvioAdmin =
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Localizador</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha de llegada</th>
+                        <th scope="col">Hora de llegada</th>
+                        <th scope="col">Importe</th>
+                        <th scope="col">DNI remitente</th>
+                        <th scope="col">DNI destinatario</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -303,11 +337,26 @@ class Envios extends Component {
             </table>;
         
 
-        if(error){
+        if((usuario === "usuario" || usuario !== "admin") && !isLoaded){
+            return(
+                <div className="container">
+                    {buscarEnvio}
+                </div>
+            );
+        } else if(usuario === "usuario" && isLoaded) {
+            return(
+                <div className="container">
+                    {buscarEnvio}
+                    {datosEnvio}
+                </div>
+            );
+        } else if(error){
             return(
                 <div className="container">
                     {errorCodigoEnvio}
                     {buscarEnvio}
+                    {textCrearEnvio}
+                    {formCrearEnvio}
                 </div>
             );
         } else if(creado){
@@ -315,6 +364,8 @@ class Envios extends Component {
                 <div className="container">
                     <p className="p-3 mb-2 bg-success text-white">Envío creado con éxito, con localizador #{localizador}</p>
                     {buscarEnvio}
+                    {textCrearEnvio}
+                    {formCrearEnvio}
                 </div>
             );
         } else if(!isLoaded) {
@@ -329,7 +380,7 @@ class Envios extends Component {
             return(
                 <div className="container">
                     {buscarEnvio}
-                    {datosEnvio}
+                    {datosEnvioAdmin}
                     {textCrearEnvio}
                     {formCrearEnvio}
                 </div>
@@ -338,14 +389,14 @@ class Envios extends Component {
             return(
                 <div className="container">
                 {buscarEnvio}
-                {datosEnvio}
+                {datosEnvioAdmin}
                 <div className="text-center">
                     <h3>Ruta envío #{localizador}</h3>
                     <table className="table">
                         <tbody>
                             <tr>
-                                <td className="font-weight-bold" colspan="2">Fecha llegada</td>
-                                <td className="font-weight-bold" colspan="2">Fecha salida</td>
+                                <td className="font-weight-bold" colSpan="2">Fecha llegada</td>
+                                <td className="font-weight-bold" colSpan="2">Fecha salida</td>
                             </tr>
                             {ruta.ruta.map((ppc, i) => {
                                 if(ppc.tipo === "OFICINA"){

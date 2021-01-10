@@ -14,6 +14,14 @@ export const MenuDatos = [
     {
         titulo: "Centros logisticos",
         path: "/centroslogisticos"
+    },
+    {
+        titulo: "Login",
+        path: "/login"
+    },
+    {
+        titulo: "Logout",
+        path: "/logout"
     }
 ];
 
