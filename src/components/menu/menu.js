@@ -14,7 +14,7 @@ class Menu extends Component {
                     <Nav className="mr-auto">
                     {MenuDatos.map((item, i) => {
                         return(
-                            <Nav.Link href={item.path}>
+                            <Nav.Link href={item.path} key={i}>
                                 {item.titulo}
                             </Nav.Link>
                         );

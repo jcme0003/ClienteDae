@@ -39,43 +39,31 @@ class verCentroLogistico extends Component {
 
     render(){
         const {error, isLoaded, nombre, localizacion} = this.state;
-        
+        let errorCodigoCentro = <p className="p-3 mb-2 bg-danger text-white">No existe el centro logístico indicado</p>;
+        let buscarCentro = 
+        <div className="mt-3 text-center">
+            <input type="text" id="input_centro" className="form-control col-4 d-inline" placeholder="ID centro logistico" name="centro" />
+            <button type="button" className="btn btn-secondary mb-1" onClick={this.buscarCentroLogistico}>Buscar</button>
+        </div>;
+
         if(error){
             return(
-                <div>
-                    <h6>El centro logistico indicado no existe</h6>
-                    <input type="text" id="input_centro" name="centro" />
-                    <button onClick={this.buscarCentroLogistico}>Buscar</button>
+                <div className="container">
+                    {errorCodigoCentro}
+                    {buscarCentro}
                 </div>
             );
         } else if(!isLoaded){
             return(
-                <div>
-                    <input type="text" id="input_centro" name="centro" />
-                    <button onClick={this.buscarCentroLogistico}>Buscar</button>
+                <div className="container">
+                    {buscarCentro}
                 </div>
             );
         } else {
             return(
-                <div>
-                    <div>
-                        <input type="text" id="input_centro" name="centro" />
-                        <button onClick={this.buscarCentroLogistico}>Buscar</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre Centro logístico</th>
-                                <th>Localización</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{nombre}</td>
-                                <td>{localizacion}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div className="container">
+                    <p className="p-3 mb-2 bg-success text-white">Centro logístico con nombre {nombre} y localización en {localizacion} encontrada en el sistema.</p>
+                    {buscarCentro}
                 </div>
             );
         }

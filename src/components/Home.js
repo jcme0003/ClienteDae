@@ -4,8 +4,8 @@ class Home extends Component {
 
     render(){
         return(
-            <div>
-                HOME
+            <div className="container text-center">
+                <h1>Bienvenido al cliente de UjaPack</h1>
             </div>
         );
     }

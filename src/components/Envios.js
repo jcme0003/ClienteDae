@@ -10,6 +10,7 @@ class Envios extends Component {
         this.state = {
             error: null,
             isLoaded: false,
+            creado: false,
             ruta: null,
             localizador: "",
             estado: "",
@@ -77,7 +78,31 @@ class Envios extends Component {
                 remitente: remitente,
                 destinatario: destinatario
             })
-        });
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    error: null,
+                    isLoaded: true,
+                    creado: true,
+                    ruta: null,
+                    localizador: result.localizador,
+                    estado: result.estado,
+                    fechaLlegada: result.fechaLlegada,
+                    horaLlegada: result.horaLlegada,
+                    importe: result.importe,
+                    remitente: result.remitente,
+                    destinatario: result.destinatario
+                });
+            },
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        );
     }
 
     buscarEnvio(){
@@ -88,6 +113,8 @@ class Envios extends Component {
                     this.setState({
                         error: null,
                         isLoaded: true,
+                        creado: false,
+                        ruta: null,
                         localizador: result.localizador,
                         estado: result.estado,
                         fechaLlegada: result.fechaLlegada,
@@ -187,70 +214,78 @@ class Envios extends Component {
     }
 
     render(){
-        const {error, isLoaded, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
-        let errorCodigoEnvio = <h6>No existe ningun envio con el codigo indicado</h6>;
+        const {error, isLoaded, creado, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
+        let errorCodigoEnvio = <p className="p-3 mb-2 bg-danger text-white">No existe ningun envio con el codigo indicado</p>;
         let buscarEnvio =
-        <React.Fragment>
-            <input type="text" id="input_envio" name="envio" />
-            <button onClick={this.buscarEnvio}>Buscar</button>
-        </React.Fragment>;
-        let textCrearEnvio = <p>Crear nuevo envío</p>;
+        <div className="mt-3 text-center">
+            <input type="text" id="input_envio" className="form-control col-6 d-inline" placeholder="Localizador de envío" name="envio" />
+            <button type="button" className="btn btn-secondary mb-1" onClick={this.buscarEnvio}>Buscar</button>
+        </div>;
+        let textCrearEnvio = <h2 className="text-center">Crear nuevo envío</h2>;
         let formCrearEnvio =
-            <form>
-                <p>Paquetes</p>
-                <label>Peso: </label>
-                <input type="text" id="fpeso" name="fpeso" />
-                <label>Anchura: </label>
-                <input type="text" id="fanchura" name="fanchura" />
-                <label>Altura: </label>
-                <input type="text" id="faltura" name="faltura" />
-                <label>Profundidad: </label>
-                <input type="text" id="fprofundidad" name="fprofundidad" />
-                <p>Datos remitente</p>
-                <label>DNI: </label>
-                <input type="text" id="fdnir" name="fdnir" />
-                <label>Nombre: </label>
-                <input type="text" id="fnombrer" name="fnombrer" />
-                <label>Apellidos: </label>
-                <input type="text" id="fapellidosr" name="fapellidosr" />
-                <label>Dirección: </label>
-                <input type="text" id="fdireccionr" name="fdireccionr" />
-                <label>Provincia: </label>
-                <input type="text" id="fprovinciar" name="fprovinciar" />
-                <label>Teléfono: </label>
-                <input type="text" id="ftelefonor" name="ftelefonor" />
-                <label>Email: </label>
-                <input type="email" id="femailr" name="femailr" />
-                <p>Datos destinatario</p>
-                <label>DNI: </label>
-                <input type="text" id="fdnid" name="fdnid" />
-                <label>Nombre: </label>
-                <input type="text" id="fnombred" name="fnombred" />
-                <label>Apellidos: </label>
-                <input type="text" id="fapellidosd" name="fapellidosd" />
-                <label>Dirección: </label>
-                <input type="text" id="fdirecciond" name="fdirecciond" />
-                <label>Provincia: </label>
-                <input type="text" id="fprovinciad" name="fprovinciad" />
-                <label>Teléfono: </label>
-                <input type="text" id="ftelefonod" name="ftelefonod" />
-                <label>Email: </label>
-                <input type="email" id="femaild" name="femaild" />
+            <div>
+                <div className="border border-1 p-3 col-lg-4 float-left">
+                <h3>Datos remitente</h3>
+                <label className="form-label mr-3">DNI: </label>
+                <input type="text" id="fdnir" className="form-control" name="fdnir" />
+                <label className="form-label mr-3">Nombre: </label>
+                <input type="text" id="fnombrer" className="form-control" name="fnombrer" />
+                <label className="form-label mr-3">Apellidos: </label>
+                <input type="text" id="fapellidosr" className="form-control" name="fapellidosr" />
+                <label className="form-label mr-3">Dirección: </label>
+                <input type="text" id="fdireccionr" className="form-control" name="fdireccionr" />
+                <label className="form-label mr-3">Provincia: </label>
+                <input type="text" id="fprovinciar" className="form-control" name="fprovinciar" />
+                <label className="form-label mr-3">Teléfono: </label>
+                <input type="text" id="ftelefonor" className="form-control" name="ftelefonor" />
+                <label className="form-label mr-3">Email: </label>
+                <input type="email" id="femailr" className="form-control" name="femailr" />
+                </div>
+                
+                <div className="border border-1 p-3 col-lg-4 float-left">
+                <h3>Datos destinatario</h3>
+                <label className="form-label mr-3">DNI: </label>
+                <input type="text" id="fdnid" className="form-control" name="fdnid" />
+                <label className="form-label mr-3">Nombre: </label>
+                <input type="text" id="fnombred" className="form-control" name="fnombred" />
+                <label className="form-label mr-3">Apellidos: </label>
+                <input type="text" id="fapellidosd" className="form-control" name="fapellidosd" />
+                <label className="form-label mr-3">Dirección: </label>
+                <input type="text" id="fdirecciond" className="form-control" name="fdirecciond" />
+                <label className="form-label mr-3">Provincia: </label>
+                <input type="text" id="fprovinciad" className="form-control" name="fprovinciad" />
+                <label className="form-label mr-3">Teléfono: </label>
+                <input type="text" id="ftelefonod" className="form-control" name="ftelefonod" />
+                <label className="form-label mr-3">Email: </label>
+                <input type="email" id="femaild" className="form-control" name="femaild" />
+                </div>
 
-                <input type="button" value="Crear envio" onClick={this.crearEnvio} />
-            </form>;
+                <div className="border border-1 p-3 col-lg-4 float-left">
+                <h3>Paquete</h3>
+                <label className="form-label mr-3">Peso</label>
+                <input type="text" id="fpeso" className="form-control" name="fpeso" />
+                <label className="form-label mr-3">Anchura: </label>
+                <input type="text" id="fanchura" className="form-control" name="fanchura" />
+                <label className="form-label mr-3">Altura: </label>
+                <input type="text" id="faltura" className="form-control" name="faltura" />
+                <label className="form-label mr-3">Profundidad: </label>
+                <input type="text" id="fprofundidad" className="form-control" name="fprofundidad" />
+                </div>
+
+                <button type="button" className="btn btn-secondary" onClick={this.crearEnvio}>Crear envío</button>
+            </div>;
         let datosEnvio =
-            <table>
+            <table className="table">
                 <thead>
                     <tr>
-                        <th>Localizador</th>
-                        <th>Estado</th>
-                        <th>Fecha de llegada</th>
-                        <th>Hora de llegada</th>
-                        <th>Importe</th>
-                        <th>DNI remitente</th>
-                        <th>DNI destinatario</th>
-                        <th></th>
+                        <th scope="col">Localizador</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha de llegada</th>
+                        <th scope="col">Hora de llegada</th>
+                        <th scope="col">Importe</th>
+                        <th scope="col">DNI remitente</th>
+                        <th scope="col">DNI destinatario</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -259,10 +294,10 @@ class Envios extends Component {
                         <td>{estado}</td>
                         <td>{fechaLlegada}</td>
                         <td>{horaLlegada}</td>
-                        <td>{importe}</td>
+                        <td>{importe} €</td>
                         <td>{remitente}</td>
                         <td>{destinatario}</td>
-                        <td><button onClick={this.verRuta}>Ver ruta</button></td>
+                        <td><button type="button" className="btn btn-secondary" onClick={this.verRuta}>Ver ruta</button></td>
                     </tr>
                 </tbody>
             </table>;
@@ -270,78 +305,83 @@ class Envios extends Component {
 
         if(error){
             return(
-                <React.Fragment>
+                <div className="container">
                     {errorCodigoEnvio}
                     {buscarEnvio}
-                </React.Fragment>
+                </div>
+            );
+        } else if(creado){
+            return(
+                <div className="container">
+                    <p className="p-3 mb-2 bg-success text-white">Envío creado con éxito, con localizador #{localizador}</p>
+                    {buscarEnvio}
+                </div>
             );
         } else if(!isLoaded) {
             return(
-                <React.Fragment>
+                <div className="container">
                     {buscarEnvio}
                     {textCrearEnvio}
                     {formCrearEnvio}
-                </React.Fragment>
+                </div>
             );
         } else if(!ruta){
             return(
-                <React.Fragment>
+                <div className="container">
                     {buscarEnvio}
                     {datosEnvio}
                     {textCrearEnvio}
                     {formCrearEnvio}
-                </React.Fragment>
+                </div>
             );
         } else if(ruta){
             return(
-                <React.Fragment>
+                <div className="container">
                 {buscarEnvio}
                 {datosEnvio}
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Ruta</td>
-                        </tr>
-                        <tr>
-                            <td>Fecha llegada</td>
-                            <td></td>
-                            <td>Fecha salida</td>
-                            <td></td>
-                        </tr>
-                        {ruta.ruta.map((ppc, i) => {
-                            if(ppc.tipo === "OFICINA"){
-                                return(
-                                    <tr key={i}>
-                                        <td>{ppc.fechaLlegada}</td>
-                                        <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaOficina(ppc.id)} /></td>
-                                        <td>{ppc.fechaSalida}</td>
-                                        <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaOficina(ppc.id)} /></td>
-                                    </tr>
-                                );
-                            } else {
-                                return(
-                                    <tr key={i}>
-                                        <td>{ppc.fechaLlegada}</td>
-                                        <td><input type="button" value="Notificar llegada" onClick={() => this.notificarLlegadaCentro(ppc.id)} /></td>
-                                        <td>{ppc.fechaSalida}</td>
-                                        <td><input type="button" value="Notificar salida" onClick={() => this.notificarSalidaCentro(ppc.id)} /></td>
-                                    </tr>
-                                );
-                            }
-                        })}
-                    </tbody>
-                </table>
+                <div className="text-center">
+                    <h3>Ruta envío #{localizador}</h3>
+                    <table className="table">
+                        <tbody>
+                            <tr>
+                                <td className="font-weight-bold" colspan="2">Fecha llegada</td>
+                                <td className="font-weight-bold" colspan="2">Fecha salida</td>
+                            </tr>
+                            {ruta.ruta.map((ppc, i) => {
+                                if(ppc.tipo === "OFICINA"){
+                                    return(
+                                        <tr key={i}>
+                                            <td>{ppc.fechaLlegada}</td>
+                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarLlegadaOficina(ppc.id)}>Notificar llegada</button></td>
+                                            <td>{ppc.fechaSalida}</td>
+                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarSalidaOficina(ppc.id)}>Notificar salida</button></td>
+                                        </tr>
+                                    );
+                                } else {
+                                    return(
+                                        <tr key={i}>
+                                            <td>{ppc.fechaLlegada}</td>
+                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarLlegadaCentro(ppc.id)}>Notificar llegada</button></td>
+                                            <td>{ppc.fechaSalida}</td>
+                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarSalidaCentro(ppc.id)}>Notificar salida</button></td>
+                                        </tr>
+                                    );
+                                }
+                            })}
+                        </tbody>
+                    </table>
+                </div>
                 {textCrearEnvio}
                 {formCrearEnvio}
-                </React.Fragment>
+                </div>
             );
         } else {
             return(
-                <React.Fragment>
+                <div className="container">
                 {buscarEnvio}
                 {textCrearEnvio}
                 {formCrearEnvio}
-                </React.Fragment>
+                </div>
             );
         }
     }

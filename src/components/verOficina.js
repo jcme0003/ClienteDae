@@ -38,41 +38,31 @@ class verOficina extends Component {
 
     render(){
         const {error, isLoaded, provincia} = this.state;
+        let errorCodigoOficina = <p className="p-3 mb-2 bg-danger text-white">No existe oficina en la provincia indicada</p>;
+        let buscarOficina = 
+        <div className="mt-3 text-center">
+            <input type="text" id="input_oficina" className="form-control col-4 d-inline" placeholder="Nombre de provincia" name="oficina" />
+            <button type="button" className="btn btn-secondary mb-1" onClick={this.buscarOficina}>Buscar</button>
+        </div>;
 
         if(error) {
             return(
-                <div>
-                    <h6>No existe la provincia indicada</h6>
-                    <input type="text" id="input_oficina" name="oficina" />
-                    <button onClick={this.buscarOficina}>Buscar</button>
+                <div className="container">
+                    {errorCodigoOficina}
+                    {buscarOficina}
                 </div>
             );
         } else if(!isLoaded) {
             return(
-                <div>
-                    <input type="text" id="input_oficina" name="oficina" />
-                    <button onClick={this.buscarOficina}>Buscar</button>
+                <div className="container">
+                    {buscarOficina}
                 </div>
             );
         } else {
             return(
-                <div>
-                    <div>
-                        <input type="text" id="input_oficina" name="oficina" />
-                        <button onClick={this.buscarOficina}>Buscar</button>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre Oficina</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{provincia}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div className="container">
+                    <p className="p-3 mb-2 bg-success text-white">Oficina con nombre {provincia} encontrada en el sistema.</p>
+                    {buscarOficina}
                 </div>
             );
         }

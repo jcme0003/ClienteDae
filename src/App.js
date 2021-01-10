@@ -10,7 +10,7 @@ import Envios from './components/Envios';
 class App extends Component {
   render(){
     return(
-      <div className="App">
+      <div>
         <Menu/>
         <Switch>
           <Route exact path="/" component={Home}/>
