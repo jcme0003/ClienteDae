@@ -1,3 +1,6 @@
+# Primeros pasos
+## Es necesario tener instalado Node.js, agregar React-Scripts con el comando "npm i react-scripts" y ejecutar cliente con "npm start"
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
