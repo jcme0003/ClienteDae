@@ -224,6 +224,7 @@ class Envios extends Component {
 
     render(){
         const {error, isLoaded, creado, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
+        let accesoDenegado = <p className="p-3 mb-2 bg-danger text-white text-center">ACCESO DENEGADO</p>;
         let errorCodigoEnvio = <p className="p-3 mb-2 bg-danger text-white">No existe ningun envio con el codigo indicado</p>;
         let buscarEnvio =
         <div className="mt-3 text-center">
@@ -336,21 +337,33 @@ class Envios extends Component {
                 </tbody>
             </table>;
         
-
-        if((usuario === "usuario" || usuario !== "admin") && !isLoaded){
+        if(usuario !== "usuario" && usuario !== "admin"){
+            return(
+                <div className="container">
+                    {accesoDenegado}
+                </div>
+            );
+        } else if((usuario === "usuario" || usuario !== "admin") && !isLoaded){
             return(
                 <div className="container">
                     {buscarEnvio}
                 </div>
             );
-        } else if(usuario === "usuario" && isLoaded) {
+        } else if(usuario === "usuario" && isLoaded && !error) {
             return(
                 <div className="container">
                     {buscarEnvio}
                     {datosEnvio}
                 </div>
             );
-        } else if(error){
+        } else if(usuario === "usuario" && error){
+            return(
+                <div className="container">
+                    {errorCodigoEnvio}
+                    {buscarEnvio}
+                </div>
+            );
+        } else if(usuario === "admin" && error){
             return(
                 <div className="container">
                     {errorCodigoEnvio}
