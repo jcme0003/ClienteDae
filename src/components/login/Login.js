@@ -16,7 +16,7 @@ class Login extends Component {
     checkLogin() {
         let usuario = document.getElementById("inputUsuario").value;
         let contrasena = document.getElementById("inputContrasena").value;
-        if((usuario === "usuario" && contrasena === "usuario") || (usuario === "admin" && contrasena === "admin")){
+        if((usuario === "operario" && contrasena === "operario") || (usuario === "admin" && contrasena === "admin")){
             this.setState({
                 login: true,
                 isLoaded: true

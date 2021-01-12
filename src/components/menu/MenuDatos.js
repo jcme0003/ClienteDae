@@ -4,15 +4,19 @@ export const MenuDatos = [
         path: "/"
     },
     {
-        titulo: "Envios",
-        path: "/envios"
+        titulo: "Crear envio",
+        path: "/crear-envio"
     },
     {
-        titulo: "Oficina",
+        titulo: "Notificar envio",
+        path: "/notificar-envio"
+    },
+    {
+        titulo: "Consultar oficina",
         path: "/oficinas"
     },
     {
-        titulo: "Centros logisticos",
+        titulo: "Consultar centro logistico",
         path: "/centroslogisticos"
     },
     {

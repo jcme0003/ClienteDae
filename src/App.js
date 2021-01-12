@@ -5,7 +5,8 @@ import Menu from './components/menu/Menu';
 import Home from './components/Home';
 import verCentroLogistico from './components/verCentroLogistico';
 import verOficina from './components/verOficina';
-import Envios from './components/Envios';
+import CrearEnvio from './components/envio/CrearEnvio';
+import NotificarEnvio from './components/envio/NotificarEnvio';
 import Login from './components/login/Login';
 import Logout from './components/login/Logout';
 
@@ -16,7 +17,8 @@ class App extends Component {
         <Menu/>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/envios/" component={Envios}/>
+          <Route path="/crear-envio/" component={CrearEnvio}/>
+          <Route path="/notificar-envio/" component={NotificarEnvio}/>
           <Route path="/oficinas/" component={verOficina}/>
           <Route path="/centroslogisticos/" component={verCentroLogistico}/>
           <Route path="/login/" component={Login}/>
@@ -26,33 +28,5 @@ class App extends Component {
     );
   }
 }
-
-/* -- CODIGO DE EJEMPLO --
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-        <section className="componentes">
-          <MiComponente/>
-          <MiComponenteDestructuring/>
-        </section>
-      </header>
-    </div>
-  );
-}*/
 
 export default App;

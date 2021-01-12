@@ -7,8 +7,8 @@ var contrasena = localStorage.getItem('contrasena');
 var headers = new Headers();
 headers.append("Authorization", "Basic " + base64.encode(usuario + ":" + contrasena));
 
-// Creacion basica de un componente para consultar y crear envios
-class Envios extends Component {
+// Creacion basica de un componente para crear envios
+class CrearEnvio extends Component {
     constructor(props){
         super(props);
 
@@ -16,7 +16,6 @@ class Envios extends Component {
             error: null,
             isLoaded: false,
             creado: false,
-            ruta: null,
             localizador: "",
             estado: "",
             fechaLlegada: "",
@@ -28,11 +27,6 @@ class Envios extends Component {
         };
         this.crearEnvio = this.crearEnvio.bind(this);
         this.buscarEnvio = this.buscarEnvio.bind(this);
-        this.verRuta = this.verRuta.bind(this);
-        this.notificarLlegadaCentro = this.notificarLlegadaCentro.bind(this);
-        this.notificarLlegadaOficina = this.notificarLlegadaOficina.bind(this);
-        this.notificarSalidaCentro = this.notificarSalidaCentro.bind(this);
-        this.notificarSalidaOficina = this.notificarSalidaOficina.bind(this);
     }
 
     crearEnvio(){
@@ -63,8 +57,6 @@ class Envios extends Component {
             email: document.getElementById("femaild").value
         }
 
-        
-
         fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -87,7 +79,6 @@ class Envios extends Component {
                     error: null,
                     isLoaded: true,
                     creado: true,
-                    ruta: null,
                     localizador: result.localizador,
                     estado: result.estado,
                     fechaLlegada: result.fechaLlegada,
@@ -117,7 +108,6 @@ class Envios extends Component {
                         error: null,
                         isLoaded: true,
                         creado: false,
-                        ruta: null,
                         localizador: result.localizador,
                         estado: result.estado,
                         fechaLlegada: result.fechaLlegada,
@@ -136,96 +126,10 @@ class Envios extends Component {
             )
     }
 
-    verRuta(){
-        fetch(apiUrl + this.state.localizador + "/ruta", {
-            headers: headers
-        })
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        error: null,
-                        isLoaded: true,
-                        ruta: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
-
-    notificarLlegadaCentro(id){
-        fetch(apiUrl + this.state.localizador + "/notificarcentrologistico/" + id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
-            },
-            body: JSON.stringify(
-                'llegada'
-            )
-        });
-
-        this.verRuta();
-    }
-
-    notificarLlegadaOficina(id){
-        fetch(apiUrl + this.state.localizador + "/notificaroficina/" + id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
-            },
-            body: JSON.stringify(
-                'llegada'
-            )
-        });
-
-        this.verRuta();
-    }
-
-    notificarSalidaCentro(id){
-        fetch(apiUrl + this.state.localizador + "/notificarcentrologistico/" + id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
-            },
-            body: JSON.stringify(
-                'salida'
-            )
-        });
-
-        this.verRuta();
-    }
-    
-    notificarSalidaOficina(id){
-        fetch(apiUrl + this.state.localizador + "/notificaroficina/" + id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + base64.encode(usuario + ':' + contrasena)
-            },
-            body: JSON.stringify(
-                'salida'
-            )
-        });
-
-        this.verRuta();
-    }
-
     render(){
-        const {error, isLoaded, creado, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario, ruta} = this.state;
+        const {error, isLoaded, creado, localizador, estado, fechaLlegada, horaLlegada, importe, remitente, destinatario} = this.state;
         let accesoDenegado = <p className="p-3 mb-2 bg-danger text-white text-center">ACCESO DENEGADO</p>;
-        let errorCodigoEnvio = <p className="p-3 mb-2 bg-danger text-white">No existe ningun envio con el codigo indicado</p>;
+        let errorCodigoEnvio = <p className="p-3 mb-2 bg-danger text-white">Se ha producido un error inexperado</p>;
         let buscarEnvio =
         <div className="mt-3 text-center">
             <input type="text" id="input_envio" className="form-control col-6 d-inline" placeholder="Localizador de envío" name="envio" />
@@ -309,64 +213,16 @@ class Envios extends Component {
                     </tr>
                 </tbody>
             </table>;
-        let datosEnvioAdmin =
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Localizador</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Fecha de llegada</th>
-                        <th scope="col">Hora de llegada</th>
-                        <th scope="col">Importe</th>
-                        <th scope="col">DNI remitente</th>
-                        <th scope="col">DNI destinatario</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{localizador}</td>
-                        <td>{estado}</td>
-                        <td>{fechaLlegada}</td>
-                        <td>{horaLlegada}</td>
-                        <td>{importe} €</td>
-                        <td>{remitente}</td>
-                        <td>{destinatario}</td>
-                        <td><button type="button" className="btn btn-secondary" onClick={this.verRuta}>Ver ruta</button></td>
-                    </tr>
-                </tbody>
-            </table>;
         
-        if(usuario !== "usuario" && usuario !== "admin"){
+        if(usuario !== "admin"){
             return(
                 <div className="container">
                     {accesoDenegado}
                 </div>
             );
-        } else if((usuario === "usuario" || usuario !== "admin") && !isLoaded){
+        } else if(!isLoaded){
             return(
                 <div className="container">
-                    {buscarEnvio}
-                </div>
-            );
-        } else if(usuario === "usuario" && isLoaded && !error) {
-            return(
-                <div className="container">
-                    {buscarEnvio}
-                    {datosEnvio}
-                </div>
-            );
-        } else if(usuario === "usuario" && error){
-            return(
-                <div className="container">
-                    {errorCodigoEnvio}
-                    {buscarEnvio}
-                </div>
-            );
-        } else if(usuario === "admin" && error){
-            return(
-                <div className="container">
-                    {errorCodigoEnvio}
                     {buscarEnvio}
                     {textCrearEnvio}
                     {formCrearEnvio}
@@ -381,70 +237,30 @@ class Envios extends Component {
                     {formCrearEnvio}
                 </div>
             );
-        } else if(!isLoaded) {
+        } else if(error){
             return(
                 <div className="container">
+                    {errorCodigoEnvio}
                     {buscarEnvio}
                     {textCrearEnvio}
                     {formCrearEnvio}
                 </div>
             );
-        } else if(!ruta){
+        } else if(!error) {
             return(
                 <div className="container">
                     {buscarEnvio}
-                    {datosEnvioAdmin}
+                    {datosEnvio}
                     {textCrearEnvio}
                     {formCrearEnvio}
-                </div>
-            );
-        } else if(ruta){
-            return(
-                <div className="container">
-                {buscarEnvio}
-                {datosEnvioAdmin}
-                <div className="text-center">
-                    <h3>Ruta envío #{localizador}</h3>
-                    <table className="table">
-                        <tbody>
-                            <tr>
-                                <td className="font-weight-bold" colSpan="2">Fecha llegada</td>
-                                <td className="font-weight-bold" colSpan="2">Fecha salida</td>
-                            </tr>
-                            {ruta.ruta.map((ppc, i) => {
-                                if(ppc.tipo === "OFICINA"){
-                                    return(
-                                        <tr key={i}>
-                                            <td>{ppc.fechaLlegada}</td>
-                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarLlegadaOficina(ppc.id)}>Notificar llegada</button></td>
-                                            <td>{ppc.fechaSalida}</td>
-                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarSalidaOficina(ppc.id)}>Notificar salida</button></td>
-                                        </tr>
-                                    );
-                                } else {
-                                    return(
-                                        <tr key={i}>
-                                            <td>{ppc.fechaLlegada}</td>
-                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarLlegadaCentro(ppc.id)}>Notificar llegada</button></td>
-                                            <td>{ppc.fechaSalida}</td>
-                                            <td><button type="button" className="btn btn-secondary" onClick={() => this.notificarSalidaCentro(ppc.id)}>Notificar salida</button></td>
-                                        </tr>
-                                    );
-                                }
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-                {textCrearEnvio}
-                {formCrearEnvio}
                 </div>
             );
         } else {
             return(
                 <div className="container">
-                {buscarEnvio}
-                {textCrearEnvio}
-                {formCrearEnvio}
+                    {buscarEnvio}
+                    {textCrearEnvio}
+                    {formCrearEnvio}
                 </div>
             );
         }
@@ -452,4 +268,4 @@ class Envios extends Component {
 
 }
 
-export default Envios;
+export default CrearEnvio;
